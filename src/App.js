@@ -1,5 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
+import Login from './components/Login';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
     <div className="App">
       Results from database:
       {JSON.stringify(result)}
+      <Login />
     </div>
   );
 
