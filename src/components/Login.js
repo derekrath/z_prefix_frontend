@@ -19,13 +19,13 @@ export default function App() {
   })
 
   const handleChange = (e) => {
-    this.setUserInfo({ [e.currentTarget.id]: e.currentTarget.value });
-    console.log(this.userInfo)
+    // this.setUserInfo({ [e.currentTarget.id]: e.currentTarget.value });
+    // console.log(this.userInfo)
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(`Form submitted, ${this.userInfo}`);
+    // e.preventDefault();
+    // console.log(`Form submitted, ${this.userInfo}`);
   };
 
   // render() {

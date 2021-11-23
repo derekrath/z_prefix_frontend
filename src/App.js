@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import Login from './components/Login';
 import Blogs from './components/Blogs';
 import { useCookies } from 'react-cookie';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.js";
 
 
@@ -50,9 +49,9 @@ function App() {
       Results from database:
       {JSON.stringify(result)}
       <Routes>
-        <Route path={`/login`} component={Login}></Route>
-        <Route path={`/blogs`} component={Blogs}></Route>
-        {/* <Navigate to={`/login`} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/blogs" element={<Blogs />} />
       </Routes>
     </div>
   );
