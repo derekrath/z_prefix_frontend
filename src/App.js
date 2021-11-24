@@ -5,6 +5,8 @@ import Blogs from './components/Blogs';
 import { useCookies } from 'react-cookie';
 import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.js";
+const cors = require('cors');
+
 
 
 function App() {

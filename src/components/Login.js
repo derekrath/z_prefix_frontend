@@ -8,6 +8,8 @@ import Alert from '@mui/material/Alert';
 
 import TextField from '@mui/material/TextField';
 
+// const cors = require('cors');
+
 const axios = require('axios');
 
 //make user info available for blog page
@@ -15,10 +17,9 @@ const axios = require('axios');
 
 export default function App() {
 
-  const url = 'http://localhost:3001/';
+  const url = 'http://localhost:3001';
 
   const [result, setResult] = useState('');
-  const [userInfo, setUserInfo] = useState([])
   const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
 
 
@@ -34,31 +35,43 @@ export default function App() {
 
   async function createUserAccount(username, passwordRaw) {
     console.log('posting', username, passwordRaw)
-    return new Promise((resolve, reject) => {
-      let newUser = {
+    axios({
+      method: 'post',
+      url: `${url}/users`,
+      data: {
         username: username,
-        password: passwordRaw
+        passwordRaw: passwordRaw
       }
-
-      fetch(`${url}/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }, body: JSON.stringify(newUser)
-      })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(res)
-          } else {
-            return res
-          }
-        })
-        .then(res => res.json())
-        .then(json => {
-          resolve(json)
-        })
-        .catch(err => reject('This username is already in use.'))
     })
+    .then(resp => {
+      console.log(resp.data);
+    });
+
+    // return new Promise((resolve, reject) => {
+    //   let newUser = {
+    //     username: username,
+    //     password: passwordRaw
+    //   }
+
+    //   fetch(`${url}/users`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     }, body: JSON.stringify(newUser)
+    //   })
+    //     .then(res => {
+    //       if (!res.ok) {
+    //         throw new Error(res)
+    //       } else {
+    //         return res
+    //       }
+    //     })
+    //     .then(res => res.json())
+    //     .then(json => {
+    //       resolve(json)
+    //     })
+    //     .catch(err => reject('This username is already in use.'))
+    // })
   }
 
   function loginUser(username, passwordRaw) {
@@ -74,6 +87,7 @@ export default function App() {
             throw new Error(res.statusText)
           } else {
             return res
+            console.log('login success', res)
           }
         })
         .then(res => res.json())
@@ -100,7 +114,7 @@ export default function App() {
   // }
 
   function logout() {
-    setUserInfo()
+    // setUserInfo()
     removeCookies('username-cookie')
     removeCookies('passwordRaw-hash-cookie')
   }
@@ -110,12 +124,14 @@ export default function App() {
 
   useEffect(() => {
     const getUsers = async () => {
-      axios.get('http://localhost:3001/')
-        .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
+      axios.get(url)
+        .then(userList => setResult(userList.data));
+      // .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
     }
     getUsers();
 
   }, []);
+
 
   // function createUser (userInfo) {
   //   axios({
@@ -171,7 +187,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, passwordRaw)
+    // console.log(username, passwordRaw)
     // login(e.target[0].value, e.target[1].value)
   }
 
@@ -179,26 +195,19 @@ export default function App() {
 
   const [username, setUsername] = useState('');
   const [passwordRaw, setPasswordRaw] = useState('');
-
-  // const onLoginSubmit = (e) => {
-  //   e.preventDefault();
-  //       login(e.target[0].value, e.target[1].value).then(success => {
-  //           if (success) {
-  //               // handleLoginModalClose()
-  //           }
-  //       }
-  //       )
-  // };
+  // const [userInfo, setUserInfo] = useState([]);
 
   const submitLogin = (e) => {
     e.preventDefault();
-    console.log(e.target.value)
+    // console.log('submited', userInfo);
+    loginUser(username, passwordRaw);
     // and dont forget to setShowLoginError if login fails
   };
 
   const submitAccount = (e) => {
     e.preventDefault();
-    console.log(e.target.value)
+    createUserAccount(username, passwordRaw);
+    // console.log('created', userInfo);
   };
 
   return (
