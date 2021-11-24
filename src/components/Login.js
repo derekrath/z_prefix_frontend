@@ -1,62 +1,243 @@
 import React, { Component } from "react";
 import { createContext, useEffect, useState } from 'react';
-// import { useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 import "../styles.css";
 import CustomInput from "./CustomInput";
 import Button from "./Button";
+import Alert from '@mui/material/Alert';
+
+import TextField from '@mui/material/TextField';
+
+const axios = require('axios');
 
 //make user info available for blog page
 // export const userInfoContext = createContext()
 
 export default function App() {
-  
+
+  const url = 'http://localhost:3001/';
+
+  const [result, setResult] = useState('');
+  const [userInfo, setUserInfo] = useState([])
+  const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
 
 
+  //setting cookies 
 
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    password: ""
-  })
+  // useEffect(() => {
+  //   let username = cookies['username-cookie']
+  //   let passwordHash = cookies['passwordRaw-hash-cookie']
+  //   if (username && passwordHash) {
+  //     login(username, passwordHash)
+  //   }
+  // }, [])
 
-  const handleChange = (e) => {
-    // this.setUserInfo({ [e.currentTarget.id]: e.currentTarget.value });
-    // console.log(this.userInfo)
-  };
+  async function createUserAccount(username, passwordRaw) {
+    console.log('posting', username, passwordRaw)
+    return new Promise((resolve, reject) => {
+      let newUser = {
+        username: username,
+        password: passwordRaw
+      }
+
+      fetch(`${url}/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, body: JSON.stringify(newUser)
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(res)
+          } else {
+            return res
+          }
+        })
+        .then(res => res.json())
+        .then(json => {
+          resolve(json)
+        })
+        .catch(err => reject('This username is already in use.'))
+    })
+  }
+
+  function loginUser(username, passwordRaw) {
+    return new Promise((resolve, reject) => {
+      fetch(`${url}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, body: JSON.stringify({ username: username, password: passwordRaw })
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(res.statusText)
+          } else {
+            return res
+          }
+        })
+        .then(res => res.json())
+        .then(json => {
+          resolve(json)
+        })
+        .catch(err => reject(err))
+    })
+  }
+
+
+  // async function login(username, passwordHash) {
+  //   //send to backend and get
+  //   return loginUser(username, passwordHash)
+  //     .then(res => {
+  //       setUserInfo(res)
+  //       setCookies('username-cookie', username)
+  //       setCookies('passwordRaw-hash-cookie', passwordRaw)
+  //       return true
+  //     })
+  //     .catch(err => {
+  //       return false
+  //     })
+  // }
+
+  function logout() {
+    setUserInfo()
+    removeCookies('username-cookie')
+    removeCookies('passwordRaw-hash-cookie')
+  }
+
+
+  //logging in with cookie data
+
+  useEffect(() => {
+    const getUsers = async () => {
+      axios.get('http://localhost:3001/')
+        .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
+    }
+    getUsers();
+
+  }, []);
+
+  // function createUser (userInfo) {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://localhost:3001/login/createuser',
+  //     data: {
+  //       username: userInfo.username,
+  //       passwordRaw: userInfo.passwordRaw
+  //     }
+  //   });
+  // }
+
+  // const api = 'http://localhost:3001/api'
+  // const [cookies, setCookies] = useState([]);
+
+  // useEffect(() => {
+  //     const getCookiesAsync = async () => {
+  //         const response = await fetch(`'http://localhost:3001/cookies`,
+  //             { credentials: 'include' });
+  //         const cookies = await response.json();
+  //         setCookies(cookies);
+  //     }
+  //     getCookiesAsync();
+  // }, [])
+
+  // const updateUsernameCookie = async () => {
+  //     await fetch(`${api}/cookies/username`, {credentials: 'include', method: 'put'})
+  // };
+
+  // const deleteUsernameCookie = async () => {
+  //     await fetch(`${api}/cookies/username`, {credentials: 'include', method: 'delete'})
+  // };
+
+  // const [userInfo, setUserInfo] = useState({
+  //   username: "",
+  //   passwordRaw: ""
+  // })
+
+
+  // const [usernameField, setUsernameField] = useState('')
+  // const [passwordField, setPasswordField] = useState('')
+  const [showLoginError, setShowLoginError] = useState(false)
+
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   let passwordRaw = getPasswordHash(passwordField)
+  //   if (appFunctions) {
+  //       appFunctions
+  //           .login(usernameField, passwordRaw)
+  //           .then(success => setShowLoginError(!success))
+  //   }
+  // };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    // console.log(`Form submitted, ${this.userInfo}`);
+    e.preventDefault();
+    console.log(username, passwordRaw)
+    // login(e.target[0].value, e.target[1].value)
+  }
+
+
+
+  const [username, setUsername] = useState('');
+  const [passwordRaw, setPasswordRaw] = useState('');
+
+  // const onLoginSubmit = (e) => {
+  //   e.preventDefault();
+  //       login(e.target[0].value, e.target[1].value).then(success => {
+  //           if (success) {
+  //               // handleLoginModalClose()
+  //           }
+  //       }
+  //       )
+  // };
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    console.log(e.target.value)
+    // and dont forget to setShowLoginError if login fails
   };
 
-  // render() {
-    return (
-      <div className="App">
-        <form className="form" onSubmit = {handleSubmit}>
-          <CustomInput
-            labelText="Username"
-            id="username"
-            formControlProps={{
-              fullWidth: true
-            }}
-            handleChange={handleChange()}
-            type="text"
-          />
-          <CustomInput
-            labelText="Password"
-            id="password"
-            formControlProps={{
-              fullWidth: true
-            }}
-            handleChange={handleChange()}
-            type="password"
-          />
-          
-          {/* <input onChange = {(e) => setName(e.target.value)} value = {name}></input> */}
-          <Button type="submit" color="primary" className="form__custom-button">
-            Log in
-          </Button>
-        </form>
-      </div>
-    );
+  const submitAccount = (e) => {
+    e.preventDefault();
+    console.log(e.target.value)
+  };
+
+  return (
+    <div className="App">
+      Results from database:
+      {JSON.stringify(result)}
+      <br></br>
+      <br></br>
+      Result from username field:
+      {username}
+      <br></br>
+      <br></br>
+      Result from password field:
+      {passwordRaw}
+      <form className="form" onSubmit={handleSubmit}>
+        <TextField
+          required
+          // id="filled-required"
+          label="Username"
+          placeholder="Username"
+          variant="filled"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+        <TextField
+          required
+          // id="filled-password-input"
+          label="Password"
+          type="password"
+          placeholder="Password"
+          variant="filled"
+          value={passwordRaw}
+          onChange={e => setPasswordRaw(e.target.value)}
+        />
+        <Button type="submit" color="primary" onClick={(e) => submitLogin(e)}>Log in</Button>
+        <Button type="submit" color="primary" onClick={(e) => submitAccount(e)}>Create Account</Button>
+        {showLoginError ? <Alert severity="error">Invalid Username or Password, Try Again</Alert> : <></>}
+      </form>
+    </div>
+  );
   // }
 }

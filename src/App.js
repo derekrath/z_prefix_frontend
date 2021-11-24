@@ -11,17 +11,6 @@ function App() {
 
   //test test test //////////////////////
 
-  let [result, setResult] = useState('');
-
-  useEffect(() => {
-    fetch('http://localhost:3001/')
-    .then(res => {
-      console.log(res)
-      return res.json()
-    })
-    .then(json => setResult(json))
-  }, []);
-
 
 
   // async function login(username, passwordHash) {
@@ -46,8 +35,8 @@ function App() {
   return (
     <div className="App">
       <NavBar title="BlogZ" />
-      Results from database:
-      {JSON.stringify(result)}
+      {/* Results from database: */}
+      {/* {JSON.stringify(result)} */}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Navigate replace to="/login" />} />
