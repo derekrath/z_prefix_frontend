@@ -17,7 +17,7 @@ const axios = require('axios');
 
 export default function App() {
 
-  const url = 'http://localhost:3001';
+  const url = 'http://localhost:8080';
 
   const [result, setResult] = useState('');
   const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
@@ -136,7 +136,7 @@ export default function App() {
   // function createUser (userInfo) {
   //   axios({
   //     method: 'post',
-  //     url: 'http://localhost:3001/login/createuser',
+  //     url: 'http://localhost:8080/login/createuser',
   //     data: {
   //       username: userInfo.username,
   //       passwordRaw: userInfo.passwordRaw
@@ -144,12 +144,12 @@ export default function App() {
   //   });
   // }
 
-  // const api = 'http://localhost:3001/api'
+  // const api = 'http://localhost:8080/api'
   // const [cookies, setCookies] = useState([]);
 
   // useEffect(() => {
   //     const getCookiesAsync = async () => {
-  //         const response = await fetch(`'http://localhost:3001/cookies`,
+  //         const response = await fetch(`'http://localhost:8080/cookies`,
   //             { credentials: 'include' });
   //         const cookies = await response.json();
   //         setCookies(cookies);
