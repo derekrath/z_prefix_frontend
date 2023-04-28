@@ -1,49 +1,109 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import Login from './components/Login';
 import Blogs from './components/Blogs';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar.js";
-const cors = require('cors');
+// const cors = require('cors');
+// import { Login } from './components/Login.js';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
+export const LoginDataContext = createContext();
+export const LoginFunctionsContext = createContext();
 
 
 function App() {
 
-  //test test test //////////////////////
+  const url = 'http://localhost:8080'
+
+  const date = new Date();
+  const nextMonth = new Date();
+  nextMonth.setMonth(date.getMonth() + 1);
+  
+  const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
+  const [showLoginError, setShowLoginError] = useState(false);
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
+  const [messageText, setMessageText] = useState('')
+
+  const loginData = {cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText}
+  const appLoginFunctions = {loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
+
+    //setting cookies 
+  useEffect(() => {
+    let username = cookies['username-cookie']
+    let passwordHash = cookies['passwordRaw-hash-cookie']
+    if (username && passwordHash) {
+      loginUser(username, passwordHash)
+    }
+  }, [])
+
+// async function login(username, password_hash) {
+//   return loginUser(username, password_hash)
+//     .then(response => {
+//       setUserData(response)
+//       setCookie('logged-in-username', username)
+//       setCookie('logged-in-password-hash', password_hash)
+//       return true
+//     })
+//     .catch(err => {return false});
+// };
+
+function loginUser(username, passwordRaw) {
+  return new Promise((resolve, reject) => {
+    fetch(`${url}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({ username, passwordRaw })
+    })
+      .then(res => {
+        if(res.ok){
+          let status = res.status;
+          // console.log('status code: okay', status)
+          // console.log('username:', username)
+          setCookies('username-cookie', username, {expires: nextMonth})
+          setCookies('passwordRaw-hash-cookie', passwordRaw, {expires: nextMonth})
+          setShowLoginError(false)
+          setShowLoginSuccess(true)
+          setShowCreateUserSuccess(false)
+        }
+        else{
+          let status = res.status;
+          console.log('status code: not okay', status)
+          setShowLoginError(true)
+          setShowLoginSuccess(false)
+          setShowCreateUserSuccess(false)
+        }
+        return res.json()
+      })
+      .then(res => {
+        console.log('status message:', res)
+        setMessageText(res)
+      })
+      .catch(err => reject(err))
+  })
+};
+     
 
 
-
-  // async function login(username, passwordHash) {
-    // return loginUser(username, password_hash)
-    //   .then(response => {
-    //     setUserData(response)
-    //     setCookie('logged-in-username', username)
-    //     setCookie('logged-in-password-hash', password_hash)
-    //     return true
-    //   })
-    //   .catch(err => {
-    //     return false
-    //   })
-  // }
-
-  // function logout() {
-    // setUserData()
-    // removeCookie('logged-in-username')
-    // removeCookie('logged-in-password-hash')
-  // }
 
   return (
     <div className="App">
-      <NavBar title="BlogZ" />
+      <LoginDataContext.Provider value={loginData}>
+        <LoginFunctionsContext.Provider value={appLoginFunctions}>
+         <NavBar title="BlogZ" />
       {/* Results from database: */}
       {/* {JSON.stringify(result)} */}
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Navigate replace to="/login" />} />
-        <Route path="/blogs" element={<Blogs />} />
-      </Routes>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate replace to="/login" />} />
+            {/* <Route path="/blogs" element={<Blogs />} /> */}
+          </Routes>
+        </LoginFunctionsContext.Provider>
+      </LoginDataContext.Provider>
     </div>
   );
 

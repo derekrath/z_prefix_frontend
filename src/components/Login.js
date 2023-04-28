@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import "../styles.css";
-import CustomInput from "./CustomInput";
+// import CustomInput from "./CustomInput";
 import Button from "./Button";
 import Alert from '@mui/material/Alert';
-
+import { LoginFunctionsContext, LoginDataContext } from "../App";
 import TextField from '@mui/material/TextField';
 
 // const cors = require('cors');
@@ -15,22 +15,26 @@ const axios = require('axios');
 //make user info available for blog page
 // export const userInfoContext = createContext()
 
-export default function App() {
 
-  const url = 'http://localhost:8080';
+export default function Login() {
 
-  const [result, setResult] = useState('');
-  const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
+  const url = 'http://localhost:8080'
+
+  const [result, setResult] = useState('')
+  // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
+  
+  const {cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
+  const {loginUser, logout, setCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
 
 
-  //setting cookies 
-  useEffect(() => {
-    let username = cookies['username-cookie']
-    let passwordHash = cookies['passwordRaw-hash-cookie']
-    if (username && passwordHash) {
-      loginUser(username, passwordHash)
-    }
-  }, [])
+  // //setting cookies 
+  // useEffect(() => {
+  //   let username = cookies['username-cookie']
+  //   let passwordHash = cookies['passwordRaw-hash-cookie']
+  //   if (username && passwordHash) {
+  //     loginUser(username, passwordHash)
+  //   }
+  // }, [])
 
   async function createUserAccount(username, passwordRaw) {
     console.log('posting', username, passwordRaw);
@@ -76,61 +80,42 @@ export default function App() {
     // })
   }
 
-  function loginUser(username, passwordRaw) {
-    return new Promise((resolve, reject) => {
-      fetch(`${url}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }, body: JSON.stringify({ username, passwordRaw })
-      })
-        .then(res => {
-          if(res.ok){
-            let status = res.status;
-            console.log('status code: okay', status)
-            setShowLoginError(false)
-            setShowLoginSuccess(true)
-            setShowCreateUserSuccess(false)
-          }
-          else{
-            let status = res.status;
-            console.log('status code: not okay', status)
-            setShowLoginError(true)
-            setShowLoginSuccess(false)
-            setShowCreateUserSuccess(false)
-          }
-          return res.json()
-        })
-        .then(res => {
-          console.log('status message:', res)
-          setMessageText(res)
-        })
-        .catch(err => reject(err))
-    })
-  };
-
-
-  // async function login(username, passwordHash) {
-  //   //send to backend and get
-  //   return loginUser(username, passwordHash)
-  //     .then(res => {
-  //       setUserInfo(res)
-  //       setCookies('username-cookie', username)
-  //       setCookies('passwordRaw-hash-cookie', passwordRaw)
-  //       return true
+  // This was working
+  // function loginUser(username, passwordRaw) {
+  //   return new Promise((resolve, reject) => {
+  //     fetch(`${url}/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       }, body: JSON.stringify({ username, passwordRaw })
   //     })
-  //     .catch(err => {
-  //       return false
-  //     })
-  // }
-
-  function logout() {
-    // setUserInfo()
-    removeCookies('username-cookie')
-    removeCookies('passwordRaw-hash-cookie')
-  }
-
-  //logging in with cookie data
+  //       .then(res => {
+  //         if(res.ok){
+  //           let status = res.status;
+  //           // console.log('status code: okay', status)
+  //           // console.log('username:', username)
+  //           setCookies('username-cookie', username)
+  //           setCookies('passwordRaw-hash-cookie', passwordRaw)
+  //           setShowLoginError(false)
+  //           setShowLoginSuccess(true)
+  //           setShowCreateUserSuccess(false)
+  //         }
+  //         else{
+  //           let status = res.status;
+  //           console.log('status code: not okay', status)
+  //           setShowLoginError(true)
+  //           setShowLoginSuccess(false)
+  //           setShowCreateUserSuccess(false)
+  //         }
+  //         return res.json()
+  //       })
+  //       .then(res => {
+  //         console.log('status message:', res)
+  //         setMessageText(res)
+  //       })
+  //       .catch(err => reject(err))
+  //   })
+  // };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -183,10 +168,10 @@ export default function App() {
 
   // const [usernameField, setUsernameField] = useState('')
   // const [passwordField, setPasswordField] = useState('')
-  const [showLoginError, setShowLoginError] = useState(false);
-  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
-  const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
-  const [messageText, setMessageText] = useState('')
+  // const [showLoginError, setShowLoginError] = useState(false);
+  // const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  // const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
+  // const [messageText, setMessageText] = useState('')
 
   // const onSubmit = (e) => {
   //   e.preventDefault();
