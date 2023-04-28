@@ -28,7 +28,7 @@ function App() {
   const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
   const [messageText, setMessageText] = useState('')
 
-  const loginData = {cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText}
+  const loginData = {url, cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText}
   const appLoginFunctions = {loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
 
     //setting cookies 
