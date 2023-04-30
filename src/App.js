@@ -27,9 +27,10 @@ function App() {
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
   const [messageText, setMessageText] = useState('')
+  const [userData, setUserData] = useState('')
 
-  const loginData = {url, cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText}
-  const appLoginFunctions = {loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
+  const loginData = {url, cookies, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText}
+  const appLoginFunctions = {setUserData, loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
 
     //setting cookies 
   useEffect(() => {
@@ -61,14 +62,14 @@ function loginUser(username, passwordRaw) {
     })
       .then(res => {
         if(res.ok){
-          // let status = res.status;
-          // console.log('status code: okay', status)
-          // console.log('username:', username)
           setCookies('username-cookie', username, {expires: nextMonth})
+          // !!!!!Change to the hash, hide the raw password!!!!
           setCookies('passwordRaw-hash-cookie', passwordRaw, {expires: nextMonth})
           setShowLoginError(false)
           setShowLoginSuccess(true)
           setShowCreateUserSuccess(false)
+          // !!!!!Change to the hash, hide the raw password!!!!
+          setUserData({username: username, password: passwordRaw})
         }
         else{
           let status = res.status;

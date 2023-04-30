@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 // import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // import SvgIcon from "@mui/material/SvgIcon";
 import Button from "@mui/material/Button";
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { Link } from "react-router-dom";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 import Stack from "@mui/material/Stack";
@@ -21,16 +22,14 @@ import FeedIcon from '@mui/icons-material/Feed';
 import { LoginFunctionsContext } from "../App.js";
 import { useContext } from 'react';
 
-
-
 export default function NavBar({title}) {
   
-  const {removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginFunctionsContext);
+  const {setUserData, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginFunctionsContext);
   
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
 
   const handleLogout = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     // console.log('submited', userInfo);
     logout();
     // appLoginFunctions.logout()
@@ -44,6 +43,7 @@ export default function NavBar({title}) {
     setShowCreateUserSuccess(false)
     setShowLoginError(false)
     setShowLoginSuccess(false)
+    setUserData();
   }
 
     return (
@@ -51,39 +51,45 @@ export default function NavBar({title}) {
         <AppBar position="static">
           <Toolbar>
             <Stack direction="row" spacing={2}>
-              {/* <Link to={`/app`}>
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  startIcon={<HomeIcon style={{ color: "white" }} />}
-                >
-                  Home
-                </Button>
-              </Link> */}
-              <Link to={`/blogs`}>
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  startIcon={<FeedIcon style={{ color: "white" }} />}
-                >
-                  Blogs
-                </Button>
-              </Link>
-              <Link to={`/login`}>
-                  Login
-              </Link>
-              {/* <Link to={`/login`} onClick={(e) => submitLogout(e)}>
-                  Logout
-              </Link> */}
-                <Button variant="text" onClick={(e) => handleLogout(e)} sx={{
-                    position: 'absolute',
-                    top: '0',
-                    right: '0',
-                    padding: '8px',
-                    margin: '5px'
-                }}>
-                  Logout
-                </Button>
+              <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                <Link to={`/blogs`}>
+                  <Button
+                    variant="contained"
+                    // color="inherit"
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    startIcon={<FeedIcon style={{ color: "white" }} />}
+                  >
+                    Blogs
+                  </Button>
+                </Link>
+                <Link to={`/login`}>
+                  <Button
+                    variant="contained"
+                    // color="inherit"
+                  >
+                    Login
+                  </Button>
+                </Link>
+                {/* <Link to={`/login`} onClick={(e) => submitLogout(e)}>
+                    Logout
+                </Link> */}
+                <Link to={'/login'}>
+                  <Button 
+                  variant="contained" 
+                  // color="inherit" 
+                  onClick={(e) => handleLogout(e)} 
+                  // sx={{
+                  //     position: 'absolute',
+                  //     top: '0',
+                  //     right: '0',
+                  //     padding: '8px',
+                  //     margin: '5px',
+                  // }}
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              </ButtonGroup>
             </Stack>
             <Typography
               variant="h3"

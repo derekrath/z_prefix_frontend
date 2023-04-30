@@ -21,11 +21,11 @@ export default function Login() {
 
   const url = 'http://localhost:8080'
 
-  const [result, setResult] = useState('')
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
-  
-  const {showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
-  const {loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
+  const [users, setUsers] = useState('')
+
+  const {userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
+  const {setUserData, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
 
 
   // //setting cookies 
@@ -121,11 +121,10 @@ export default function Login() {
   useEffect(() => {
     const getUsers = async () => {
       axios.get(url)
-        .then(userList => setResult(userList.data));
+        .then(userList => setUsers(userList.data));
       // .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
     }
     getUsers();
-
   }, []);
 
 
@@ -186,13 +185,11 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(username, passwordRaw)
     // login(e.target[0].value, e.target[1].value)
   }
 
   const [username, setUsername] = useState('');
   const [passwordRaw, setPasswordRaw] = useState('');
-  // const [userInfo, setUserInfo] = useState([]);
 
   const submitLogin = (e) => {
     setShowLoginError(false)
@@ -204,17 +201,16 @@ export default function Login() {
   const submitAccount = (e) => {
     e.preventDefault();
     createUserAccount(username, passwordRaw);
-    // console.log('created', userInfo);
   };
 
   return (
     <div className="App">
       Results from database:
-      {JSON.stringify(result)}
+      {JSON.stringify(users)}
       <br></br>
       <br></br>
       Login Status:
-      {showLoginError}
+      {userData? <> Logged In </>:<> Logged Out </>}
       <br></br>
       <br></br>
       Result from username field:
