@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-d
 import NavBar from "./components/NavBar.js";
 // const cors = require('cors');
 // import { Login } from './components/Login.js';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 export const LoginDataContext = createContext();
@@ -61,7 +61,7 @@ function loginUser(username, passwordRaw) {
     })
       .then(res => {
         if(res.ok){
-          let status = res.status;
+          // let status = res.status;
           // console.log('status code: okay', status)
           // console.log('username:', username)
           setCookies('username-cookie', username, {expires: nextMonth})
@@ -100,7 +100,7 @@ function loginUser(username, passwordRaw) {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
-            {/* <Route path="/blogs" element={<Blogs />} /> */}
+            <Route path="/blogs" element={<Blogs />} />
           </Routes>
         </LoginFunctionsContext.Provider>
       </LoginDataContext.Provider>

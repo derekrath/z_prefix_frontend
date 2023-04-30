@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
+// import React, { Component } from "react";
+import React from "react";
+import { useContext, useEffect, useState } from 'react';
+// import { useCookies } from 'react-cookie';
 import "../styles.css";
 // import CustomInput from "./CustomInput";
 import Button from "./Button";
@@ -23,8 +24,8 @@ export default function Login() {
   const [result, setResult] = useState('')
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
   
-  const {cookies, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
-  const {loginUser, logout, setCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
+  const {showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
+  const {loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
 
 
   // //setting cookies 

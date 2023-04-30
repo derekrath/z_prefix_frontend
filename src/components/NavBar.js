@@ -17,15 +17,15 @@ import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import FeedIcon from '@mui/icons-material/Feed';
 // import HomeIcon from '@mui/icons-material/Home';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 import { LoginFunctionsContext } from "../App.js";
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 
 
 
 export default function NavBar({title}) {
   
-  const {setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
+  const {removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginFunctionsContext);
   
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
 
