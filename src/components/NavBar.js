@@ -21,6 +21,9 @@ import FeedIcon from '@mui/icons-material/Feed';
 // import { useCookies } from 'react-cookie';
 import { LoginFunctionsContext } from "../App.js";
 import { useContext } from 'react';
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
+import RegularButton from "./LoginButton";
+
 
 // const { palette } = createTheme();
 // const { augmentColor } = palette;
@@ -29,6 +32,13 @@ import { useContext } from 'react';
 //   palette: {
 //     custom: createColor('#F40B27'),
 //   },
+// });
+
+// const theme = createTheme({
+//   palette: {
+//     primary: yellow,
+//     secondary: yellow
+//   }
 // });
 
 export default function NavBar({title}) {
@@ -67,9 +77,6 @@ export default function NavBar({title}) {
             flexDirection: 'row',
             alignItems: 'flex-end',
             justifyContent: 'space-between',
-            '& > *': {
-              m: 1,
-            },
           }}
           >
             {/* <Stack direction="row" spacing={4}> */}
@@ -86,33 +93,41 @@ export default function NavBar({title}) {
               }}
             >
                 <Link to={`/blogs`}>
-                  <Button
+                  <RegularButton
                     variant="contained"
-                    color="inherit"
+                    // color="inherit"
+                    color="primary"
                     style={{
                       // borderRadius: 35,
-                      backgroundColor: "white",
+                      // backgroundColor: "white",
                       // padding: "18px 36px",
                       fontSize: "18px"
                     }}
                     // sx={{ my: 2, color: 'white', display: 'block' }}
-                    startIcon={<FeedIcon style={{ color: "gray" }} />}
+                    startIcon={<FeedIcon style={{ color: "white" }} />}
                   >
                     Blogs
-                  </Button>
+                  </RegularButton>
                 </Link>
-                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                {/* <ButtonGroup variant="contained" aria-label="outlined primary button group"> */}
                 <Link to={`/login`}>
-                  <Button>
+                  <RegularButton 
+                  color="facebook"
+                  style={{ width: '80px'}}
+                  >
                     Login
-                  </Button>
+                  </RegularButton>
                 </Link>
                 <Link to={'/login'}>
-                  <Button onClick={(e) => handleLogout(e)}>
+                  <RegularButton 
+                    color="facebook"
+                    style={{ width: '80px'}}
+                  onClick={(e) => handleLogout(e)}
+                  >
                     Logout
-                  </Button>
+                  </RegularButton>
                 </Link>
-              </ButtonGroup>
+              {/* </ButtonGroup> */}
             </Box>
             {/* </Stack> */}
             <Box

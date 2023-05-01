@@ -79,7 +79,7 @@ function loginUser(username, passwordRaw) {
     <div className="App">
       <LoginDataContext.Provider value={loginData}>
         <LoginFunctionsContext.Provider value={appLoginFunctions}>
-         <NavBar title="BlogZ" />
+        <NavBar title="BlogZ" />
       {/* Results from database: */}
       {/* {JSON.stringify(result)} */}
           <Routes>
