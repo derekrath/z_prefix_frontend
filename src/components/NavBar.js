@@ -22,6 +22,15 @@ import FeedIcon from '@mui/icons-material/Feed';
 import { LoginFunctionsContext } from "../App.js";
 import { useContext } from 'react';
 
+// const { palette } = createTheme();
+// const { augmentColor } = palette;
+// const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+// const theme = createTheme({
+//   palette: {
+//     custom: createColor('#F40B27'),
+//   },
+// });
+
 export default function NavBar({title}) {
   
   const {setUserData, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginFunctionsContext);
@@ -47,60 +56,87 @@ export default function NavBar({title}) {
   }
 
     return (
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Stack direction="row" spacing={2}>
-              <ButtonGroup variant="contained" aria-label="outlined primary button group">
+      // <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" 
+        // sx={{margin: 2}}
+        >
+          <Toolbar 
+          // sx={{margin: 2}}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            '& > *': {
+              m: 1,
+            },
+          }}
+          >
+            {/* <Stack direction="row" spacing={4}> */}
+            <Box
+            // sx={{margin: 2}}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'left',
+                '& > *': {
+                  m: 1,
+                },
+              }}
+            >
                 <Link to={`/blogs`}>
                   <Button
                     variant="contained"
-                    // color="inherit"
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    startIcon={<FeedIcon style={{ color: "white" }} />}
+                    color="inherit"
+                    style={{
+                      // borderRadius: 35,
+                      backgroundColor: "white",
+                      // padding: "18px 36px",
+                      fontSize: "18px"
+                    }}
+                    // sx={{ my: 2, color: 'white', display: 'block' }}
+                    startIcon={<FeedIcon style={{ color: "gray" }} />}
                   >
                     Blogs
                   </Button>
                 </Link>
+                <ButtonGroup variant="contained" aria-label="outlined primary button group">
                 <Link to={`/login`}>
-                  <Button
-                    variant="contained"
-                    // color="inherit"
-                  >
+                  <Button>
                     Login
                   </Button>
                 </Link>
-                {/* <Link to={`/login`} onClick={(e) => submitLogout(e)}>
-                    Logout
-                </Link> */}
                 <Link to={'/login'}>
-                  <Button 
-                  variant="contained" 
-                  // color="inherit" 
-                  onClick={(e) => handleLogout(e)} 
-                  // sx={{
-                  //     position: 'absolute',
-                  //     top: '0',
-                  //     right: '0',
-                  //     padding: '8px',
-                  //     margin: '5px',
-                  // }}
-                  >
+                  <Button onClick={(e) => handleLogout(e)}>
                     Logout
                   </Button>
                 </Link>
               </ButtonGroup>
-            </Stack>
-            <Typography
-              variant="h3"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            </Box>
+            {/* </Stack> */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'left',
+                '& > *': {
+                  m: 1,
+                },
+              }}
             >
-              {title}
-            </Typography>
+              <Typography
+                variant="h3"
+                noWrap
+                // component="div"
+                // sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              >
+                {title}
+              </Typography>
+            </Box>
           </Toolbar>
         </AppBar>
-      </Box>
+      // </Box>
     );
   }

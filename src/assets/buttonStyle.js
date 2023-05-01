@@ -9,6 +9,7 @@ import {
   } from "./material-kit-react.js";
   
   const gray = "#333";
+  // login button color:
   const primaryColor = "#4f6b8a";
   
   const buttonStyle = {

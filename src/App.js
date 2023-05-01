@@ -13,7 +13,6 @@ import { useCookies } from 'react-cookie';
 export const LoginDataContext = createContext();
 export const LoginFunctionsContext = createContext();
 
-
 function App() {
 
   const url = 'http://localhost:8080'
@@ -40,17 +39,6 @@ function App() {
       loginUser(username, passwordHash)
     }
   }, [])
-
-// async function login(username, password_hash) {
-//   return loginUser(username, password_hash)
-//     .then(response => {
-//       setUserData(response)
-//       setCookie('logged-in-username', username)
-//       setCookie('logged-in-password-hash', password_hash)
-//       return true
-//     })
-//     .catch(err => {return false});
-// };
 
 function loginUser(username, passwordRaw) {
   return new Promise((resolve, reject) => {
@@ -81,15 +69,11 @@ function loginUser(username, passwordRaw) {
         return res.json()
       })
       .then(res => {
-        console.log('status message:', res)
         setMessageText(res)
       })
       .catch(err => reject(err))
   })
 };
-     
-
-
 
   return (
     <div className="App">
@@ -107,8 +91,6 @@ function loginUser(username, passwordRaw) {
       </LoginDataContext.Provider>
     </div>
   );
-
-  // ///////////////////////////////
 
 }
 

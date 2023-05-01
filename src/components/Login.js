@@ -4,7 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 // import { useCookies } from 'react-cookie';
 import "../styles.css";
 // import CustomInput from "./CustomInput";
-import Button from "./Button";
+import Button from "./LoginButton";
+// import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 import { LoginFunctionsContext, LoginDataContext } from "../App";
 import TextField from '@mui/material/TextField';
@@ -16,7 +17,6 @@ const axios = require('axios');
 //make user info available for blog page
 // export const userInfoContext = createContext()
 
-
 export default function Login() {
 
   const url = 'http://localhost:8080'
@@ -25,17 +25,7 @@ export default function Login() {
   const [users, setUsers] = useState('')
 
   const {userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
-  const {setUserData, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
-
-
-  // //setting cookies 
-  // useEffect(() => {
-  //   let username = cookies['username-cookie']
-  //   let passwordHash = cookies['passwordRaw-hash-cookie']
-  //   if (username && passwordHash) {
-  //     loginUser(username, passwordHash)
-  //   }
-  // }, [])
+  const {loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
 
   async function createUserAccount(username, passwordRaw) {
     console.log('posting', username, passwordRaw);
@@ -48,75 +38,13 @@ export default function Login() {
       }
     })
     .then(res => {
-      console.log('response on frontend:', res.data)
+      // console.log('response on frontend:', res.data)
       setMessageText(res.data.message)
       setShowCreateUserSuccess(true)
       setShowLoginError(false)
       setShowLoginSuccess(false)
     })
-    // return new Promise((resolve, reject) => {
-    //   let newUser = {
-    //     username: username,
-    //     password: passwordRaw
-    //   }
-
-    //   fetch(`${url}/users`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     }, body: JSON.stringify(newUser)
-    //   })
-    //     .then(res => {
-    //       if (!res.ok) {
-    //         throw new Error(res)
-    //       } else {
-    //         return res
-    //       }
-    //     })
-    //     .then(res => res.json())
-    //     .then(json => {
-    //       resolve(json)
-    //     })
-    //     .catch(err => reject('This username is already in use.'))
-    // })
   }
-
-  // This was working
-  // function loginUser(username, passwordRaw) {
-  //   return new Promise((resolve, reject) => {
-  //     fetch(`${url}/login`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       }, body: JSON.stringify({ username, passwordRaw })
-  //     })
-  //       .then(res => {
-  //         if(res.ok){
-  //           let status = res.status;
-  //           // console.log('status code: okay', status)
-  //           // console.log('username:', username)
-  //           setCookies('username-cookie', username)
-  //           setCookies('passwordRaw-hash-cookie', passwordRaw)
-  //           setShowLoginError(false)
-  //           setShowLoginSuccess(true)
-  //           setShowCreateUserSuccess(false)
-  //         }
-  //         else{
-  //           let status = res.status;
-  //           console.log('status code: not okay', status)
-  //           setShowLoginError(true)
-  //           setShowLoginSuccess(false)
-  //           setShowCreateUserSuccess(false)
-  //         }
-  //         return res.json()
-  //       })
-  //       .then(res => {
-  //         console.log('status message:', res)
-  //         setMessageText(res)
-  //       })
-  //       .catch(err => reject(err))
-  //   })
-  // };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -126,62 +54,6 @@ export default function Login() {
     }
     getUsers();
   }, []);
-
-
-  // function createUser (userInfo) {
-  //   axios({
-  //     method: 'post',
-  //     url: 'http://localhost:8080/login/createuser',
-  //     data: {
-  //       username: userInfo.username,
-  //       passwordRaw: userInfo.passwordRaw
-  //     }
-  //   });
-  // }
-
-  // const api = 'http://localhost:8080/api'
-  // const [cookies, setCookies] = useState([]);
-
-  // useEffect(() => {
-  //     const getCookiesAsync = async () => {
-  //         const response = await fetch(`'http://localhost:8080/cookies`,
-  //             { credentials: 'include' });
-  //         const cookies = await response.json();
-  //         setCookies(cookies);
-  //     }
-  //     getCookiesAsync();
-  // }, [])
-
-  // const updateUsernameCookie = async () => {
-  //     await fetch(`${api}/cookies/username`, {credentials: 'include', method: 'put'})
-  // };
-
-  // const deleteUsernameCookie = async () => {
-  //     await fetch(`${api}/cookies/username`, {credentials: 'include', method: 'delete'})
-  // };
-
-  // const [userInfo, setUserInfo] = useState({
-  //   username: "",
-  //   passwordRaw: ""
-  // })
-
-
-  // const [usernameField, setUsernameField] = useState('')
-  // const [passwordField, setPasswordField] = useState('')
-  // const [showLoginError, setShowLoginError] = useState(false);
-  // const [showLoginSuccess, setShowLoginSuccess] = useState(false);
-  // const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
-  // const [messageText, setMessageText] = useState('')
-
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   let passwordRaw = getPasswordHash(passwordField)
-  //   if (appFunctions) {
-  //       appFunctions
-  //           .login(usernameField, passwordRaw)
-  //           .then(success => setShowLoginError(!success))
-  //   }
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -204,7 +76,7 @@ export default function Login() {
   };
 
   return (
-    <div className="App">
+    <div className="LoginApp">
       Results from database:
       {JSON.stringify(users)}
       <br></br>
@@ -239,8 +111,49 @@ export default function Login() {
           value={passwordRaw}
           onChange={e => setPasswordRaw(e.target.value)}
         />
-        <Button type="submit" color="primary" onClick={(e) => submitLogin(e)}>Log in</Button>
-        <Button type="submit" color="primary" onClick={(e) => submitAccount(e)}>Create Account</Button>
+        <Button type="submit"
+        style={{ 
+        //   minHeight: "auto",
+        //   minWidth: "auto",
+        //   color: "#FFFFFF",
+        //   boxShadow:"0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)",
+        //   position: "relative",
+        //   padding: "12px 30px",
+        //   margin: ".3125rem 1px",
+        //   fontSize: "14px",
+        //   textTransform: "uppercase",
+        //   letterSpacing: "0",
+        //   lineHeight: "1.42857143",
+        //   textAlign: "center",
+        //   verticalAlign: "middle",
+          backgroundColor: "#3b5998",
+        }} 
+        // color="facebook"
+        onClick={(e) => submitLogin(e)}
+        >
+          Log in
+        </Button>
+        <Button type="submit" 
+          // style={{ 
+          //   minHeight: "auto",
+          //   minWidth: "auto",
+          //   color: "#FFFFFF",
+          //   boxShadow:"0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)",
+          //   position: "relative",
+          //   padding: "12px 30px",
+          //   margin: ".3125rem 1px",
+          //   fontSize: "14px",
+          //   textTransform: "uppercase",
+          //   letterSpacing: "0",
+          //   lineHeight: "1.42857143",
+          //   textAlign: "center",
+          //   verticalAlign: "middle",
+          //   backgroundColor: "#3b5998",
+          // }} 
+        onClick={(e) => submitAccount(e)}
+        >
+          Create Account
+        </Button>
         {showLoginError ? <Alert severity="error">{messageText}</Alert> : <></>}
         {showLoginSuccess ? <Alert severity="success">{messageText}</Alert> : <></>}
         {showCreateUserSuccess ? <Alert severity="info">{messageText}</Alert> : <></>}
