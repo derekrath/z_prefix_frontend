@@ -1,0 +1,66 @@
+import './App.css';
+import { createContext, useEffect, useState } from 'react';
+import Login from './components/Login';
+import Blogs from './components/Blogs';
+// import { useCookies } from 'react-cookie';
+import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar.js";
+const cors = require('cors');
+
+export const AppContext = createContext(null);
+
+function AppProvider({children}) {
+
+  const [username, setUsername] = useState('');
+  const [passwordRaw, setPasswordRaw] = useState('');
+  const [users, setUserList] = useState([]);
+  const [accountStatus, setCreateAccountStatus] = useState('');
+  const [loginStatus, setLoginStatus] = useState(false);
+  const [content, addContent] = useState('');
+  const [title, addTitle] = useState('');
+  const [userBlogs, setUserBlogs] = useState([]);
+  const [allUserBlogs, setAllUserBlogs] = useState([]);
+
+  const contextData = {
+    username,
+    setUsername,
+    passwordRaw,
+    setPasswordRaw,
+    users,
+    setUserList,
+    accountStatus,
+    setCreateAccountStatus,
+    loginStatus,
+    setLoginStatus,
+    content,
+    addContent,
+    title,
+    addTitle,
+    userBlogs,
+    setUserBlogs,
+    allUserBlogs,
+    setAllUserBlogs,
+  }
+  
+  return (
+    <Router>
+      {/* <div className="App-provider"> */}
+        <AppContext.Provider value={contextData}>
+          <NavBar siteTitle="BlogZ" />
+          <Routes>
+            <Route path="/login" component={Login} element={<Login />} />
+            {username === '' &&
+              <Route path="/" element={ <Navigate replace to="/login" /> } /> 
+            }
+            <Route path="/blogs" component={Blogs} element={<Blogs />} />
+          </Routes>
+        </AppContext.Provider>
+      {/* </div> */}
+    </Router>
+  );
+
+  // ///////////////////////////////
+
+}
+
+export default AppProvider;
