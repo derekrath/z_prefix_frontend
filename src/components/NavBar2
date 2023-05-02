@@ -1,0 +1,88 @@
+import * as React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import SvgIcon from "@mui/material/SvgIcon";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Stack from "@mui/material/Stack";
+import FeedIcon from '@mui/icons-material/Feed';
+import HomeIcon from '@mui/icons-material/Home';
+import {AppContext} from '../App.js';
+import { useContext, useEffect, useState } from 'react';
+
+export default function NavBar({siteTitle}) {
+
+  // const data = useContext(AppContext);
+    // console.log('context data',data)
+    const {
+      username,
+      setUsername,
+      passwordRaw,
+      setPasswordRaw,
+      users,
+      setUserList,
+      accountStatus,
+      setCreateAccountStatus,
+      loginStatus,
+      setLoginStatus,
+      content,
+      addContent,
+      title,
+      addTitle,
+      userBlogs,
+      setUserBlogs,
+      allUserBlogs,
+      setAllUserBlogs,
+    } = useContext(AppContext);
+
+    return (
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Stack direction="row" spacing={2}>
+              {/* <Link to={`/app`}>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  startIcon={<HomeIcon style={{ color: "white" }} />}
+                >
+                  Home
+                </Button>
+              </Link> */}
+              <Link to={`/blogs`}>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  startIcon={<FeedIcon style={{ color: "white" }} />}
+                >
+                  Blogs
+                </Button>
+              </Link>
+              <Link to={`/login`}>
+                  Login
+              </Link>
+              <Link to={`/login`} onClick={() => setUsername('')}>
+                  Logout
+              </Link>
+            </Stack>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 2, display: { xs: "none", sm: "block" }}}
+            >
+                {siteTitle}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    );
+  }
