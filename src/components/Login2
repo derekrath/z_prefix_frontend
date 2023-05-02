@@ -1,0 +1,161 @@
+import React, { Component } from "react";
+import { useContext, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import "../styles.css";
+import Button from "./Button";
+import Alert from '@mui/material/Alert';
+import TextField from '@mui/material/TextField';
+import {AppContext} from '../App.js';
+// import e from "express";
+
+const cors = require('cors');
+// make user info available for blog page
+
+
+const axios = require('axios');
+
+export default function Login() {
+
+  // const data = useContext(AppContext);
+    // console.log('context data',data)
+    const {
+      username,
+      setUsername,
+      passwordRaw,
+      setPasswordRaw,
+      users,
+      setUserList,
+      accountStatus,
+      setCreateAccountStatus,
+      loginStatus,
+      setLoginStatus,
+      content,
+      addContent,
+      title,
+      addTitle,
+      userBlogs,
+      setUserBlogs,
+      allUserBlogs,
+      setAllUserBlogs,
+    } = useContext(AppContext);
+
+  // const url = "http://localhost:3001";
+  // const url = "https://z-prefix-server.herokuapp.com"
+  const dev = process.env.NODE_ENV !== 'production';
+  const url = dev ? 'http://localhost:3001' : 'https://z-prefix-server.herokuapp.com';
+
+  async function createUserAccount(username, passwordRaw) {
+    axios({
+      method: 'post',
+      url: `${url}/users`,
+      data: {
+        username: username,
+        passwordRaw: passwordRaw
+      }
+    })
+    .then(res => {
+      if(res.data==='SUCCESS'){
+        setLoginStatus(false);
+        loginUser(username, passwordRaw);
+      } else {
+        setLoginStatus(true);
+        setCreateAccountStatus(res.data)
+      }
+      console.log(res.data);
+    });
+  }
+
+  function loginUser(username, passwordRaw) {
+    return new Promise((resolve, reject) => {
+      fetch(`${url}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, body: JSON.stringify({ username: username, passwordRaw: passwordRaw })
+      })
+        .then(res => {
+          if (!res.ok) {
+            // throw new Error(res.statusText)
+          } else {
+            setLoginStatus(true);
+            setUsername(username);
+            return res
+          }
+        })
+        .catch(err => reject(err))
+    })
+  }
+
+
+  //logging in with cookie data?
+  useEffect(() => {
+    const getUsers = async () => {
+      axios.get(url)
+        .then(userList => setUserList(userList.data));
+    }
+    getUsers();
+
+  }, []);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    loginUser(username, passwordRaw);
+  };
+
+  const submitAccount = (e) => {
+    e.preventDefault();
+    createUserAccount(username, passwordRaw);
+  };
+
+  var environment = process.env.NODE_ENV
+
+  return (
+        <div className="Login">
+          PORT:
+          {process.env.PORT}
+          <br></br>
+          <br></br>
+          NODE_ENV:
+          {environment}
+          <br></br>
+          <br></br>
+          Results from databases:
+          {JSON.stringify(users)}
+          <br></br>
+          <br></br>
+          Result from username field:
+          {username}
+          <br></br>
+          <br></br>
+          Result from password field:
+          {passwordRaw}
+          <form className="form" onSubmit={handleSubmit}>
+            <TextField
+              required
+              label="Username"
+              placeholder="Username"
+              variant="filled"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+            <TextField
+              required
+              label="Password"
+              type="password"
+              placeholder="Password"
+              variant="filled"
+              value={passwordRaw}
+              onChange={e => setPasswordRaw(e.target.value)}
+            />
+            <Button type="submit" color="primary" onClick={(e) => submitLogin(e)}>Log in</Button>
+            <Button type="submit" color="primary" onClick={(e) => submitAccount(e)}>Create Account</Button>
+            {loginStatus ? <Alert severity="error">Invalid Username or Password, Try Again</Alert> : <></>}
+          </form>
+        </div>
+  )
+}
