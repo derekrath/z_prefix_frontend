@@ -191,18 +191,19 @@ export default function Blogs() {
     })
   }
 
-  // async function editBlog(username, title, content) {
-  //   let blog_username = username;
-  //   axios({
-  //     method: "put",
-  //     url: `${url}/blogs`,
-  //     data: {
-  //       blog_username: username,
-  //       title: title,
-  //       content: content,
-  //     },
-  //   });
-  // }
+  async function editBlog(username, title, content) {
+    // let blog_username = username;
+    console.log('editing: ', `${username}'s ${title} with ${content}`);
+    axios({
+      method: "put",
+      url: `${url}/blogs`,
+      data: {
+        blog_username: username,
+        title: title,
+        content: content,
+      },
+    });
+  }
 
   // async function deleteBlog(title) {
   //   return new Promise((resolve, reject) => {
@@ -254,7 +255,10 @@ export default function Blogs() {
   // }
   const reload=()=>window.location.reload();
 
-  const handleOpen1 = () => setOpen1(true);
+  const handleOpen1 = (blog_title) => {
+    setOpen1(true);
+    addTitle(blog_title);
+  };
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false)
@@ -271,11 +275,13 @@ export default function Blogs() {
     reload();
   };
 
-  // const handleEditSubmit = () => {
-  //   editBlog(username, title, content);
-  //   setOpen(false);
-  //   reload();
-  // };
+  const handleEditSubmit = () => {
+    console.log('submitting for editing: ', `${username}'s ${title} with ${content}`);
+    // console.log('submitting for editing: ', title);
+    editBlog(username, title, content);
+    setOpen(false);
+    reload();
+  };
 
   const handleClickOpen = () => setOpen(true);
   const handleClickOpen1 = () => setOpen1(true);
@@ -396,18 +402,19 @@ export default function Blogs() {
                             </Typography>
                           </Box>
                         </Box>
+
                         {/* <Box>
                           <BookmarkBorderIcon />
                         </Box> */}
-                        {/* <Box>
+
+                        <Box>
                           <Button
                               variant="outlined"
                               color="inherit"
                               startIcon={<EditIcon style={{ color: "orange" }} />}
-                              onClick={handleOpen1}
+                              onClick={() => handleOpen1(blog.title)}
                           >
                           </Button>
-                          
                           <Modal
                             open={open1}
                             onClose={handleClose1}
@@ -416,14 +423,14 @@ export default function Blogs() {
                           >
                             <Box sx={style}>
                               <div>
-                                <Button
+                                {/* <Button
                                   variant="outlined"
                                   onClick={handleClickOpen1}
                                 >
                                   Open form dialog
-                                </Button>
+                                </Button> */}
                                 <Dialog open={open1} onClose={handleClose1}>
-                                  <DialogTitle>{blog.title}</DialogTitle>
+                                  <DialogTitle>{title}</DialogTitle>
                                   <DialogContent>
                                     <DialogContentText>
                                       Edit blog post!
@@ -445,7 +452,7 @@ export default function Blogs() {
                                     <Button onClick={handleClose1}>
                                       Cancel
                                     </Button>
-                                    <Button onClick={()=>handleEditSubmit(blog.title)}>
+                                    <Button onClick={handleEditSubmit}>
                                       Submit
                                     </Button>
                                   </DialogActions>
@@ -453,7 +460,7 @@ export default function Blogs() {
                               </div>
                             </Box>
                           </Modal>
-                        </Box> */}
+                        </Box>
 
                         {/* <Box>
                             <Button
