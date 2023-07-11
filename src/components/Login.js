@@ -7,7 +7,7 @@ import "../styles.css";
 import Button from "./LoginButton";
 // import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
-import { LoginFunctionsContext, LoginDataContext } from "../App";
+import { LoginContext } from "../App";
 import TextField from '@mui/material/TextField';
 
 // const cors = require('cors');
@@ -19,13 +19,20 @@ const axios = require('axios');
 
 export default function Login() {
 
-  const url = 'http://localhost:8080'
+  // This works:
+  // const url = 'http://localhost:8080'
+
+  // This also seems to work:
+    // const url = "http://localhost:3001";
+  // const url = "https://z-prefix-server.herokuapp.com"
+  const dev = process.env.NODE_ENV !== 'production';
+  const url = dev ? 'http://localhost:8080' : 'https://z-prefix-server.herokuapp.com';
 
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
   const [users, setUsers] = useState('')
+  const [passwordRaw, setPasswordRaw] = useState('');
 
-  const {userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText} = useContext(LoginDataContext)
-  const {loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginFunctionsContext);
+  const {username, setUsername, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginContext);
 
   async function createUserAccount(username, passwordRaw) {
     console.log('posting', username, passwordRaw);
@@ -33,7 +40,7 @@ export default function Login() {
       method: 'post',
       url: `${url}/users`,
       data: {
-        username: username,
+        user_username: username,
         passwordRaw: passwordRaw
       }
     })
@@ -48,7 +55,8 @@ export default function Login() {
 
   useEffect(() => {
     const getUsers = async () => {
-      axios.get(url)
+      axios.get(`${url}/users`)
+      // .then(userList => console.log(userList.data))
         .then(userList => setUsers(userList.data));
       // .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
     }
@@ -59,9 +67,6 @@ export default function Login() {
     e.preventDefault();
     // login(e.target[0].value, e.target[1].value)
   }
-
-  const [username, setUsername] = useState('');
-  const [passwordRaw, setPasswordRaw] = useState('');
 
   const submitLogin = (e) => {
     setShowLoginError(false)

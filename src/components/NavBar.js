@@ -19,7 +19,7 @@ import Stack from "@mui/material/Stack";
 import FeedIcon from '@mui/icons-material/Feed';
 // import HomeIcon from '@mui/icons-material/Home';
 // import { useCookies } from 'react-cookie';
-import { LoginFunctionsContext } from "../App.js";
+import { LoginContext } from "../App.js";
 import { useContext } from 'react';
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RegularButton from "./LoginButton";
@@ -43,7 +43,7 @@ import RegularButton from "./LoginButton";
 
 export default function NavBar({title}) {
   
-  const {setUserData, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginFunctionsContext);
+  const {setUserData, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess} = useContext(LoginContext);
   
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
 
