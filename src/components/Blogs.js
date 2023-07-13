@@ -114,15 +114,16 @@ export default function Blogs() {
   const [showError, setShowError] = useState(false);
   const [messageText, setMessageText] = useState('');
 
-  const {username} = useContext(LoginContext);
+  const {userData} = useContext(LoginContext);
   // const username = 'cooluser';
+  let username = userData.user_username;
   console.log('username: ', username);
 
   const {
     content,
-    addContent,
+    setContent,
     title,
-    addTitle,
+    setTitle,
     userBlogs,
     setUserBlogs,
     allUserBlogs,
@@ -179,7 +180,7 @@ export default function Blogs() {
     console.log('posting', username);
     axios({
       method: 'post',
-      url: `${url}/blogs`,
+      url: `${url}/blogs/${username}`,
       data: {
         blog_username: username,
         title: title,
@@ -191,12 +192,12 @@ export default function Blogs() {
     })
   }
 
-  async function editBlog(username, title, content) {
+  async function editBlog() {
     // let blog_username = username;
     console.log('editing: ', `${username}'s ${title} with ${content}`);
     axios({
       method: "put",
-      url: `${url}/blogs`,
+      url: `${url}/blogs/${username}`,
       data: {
         blog_username: username,
         title: title,
@@ -205,13 +206,24 @@ export default function Blogs() {
     });
   }
 
-  // async function deleteBlog(title) {
-  //   return new Promise((resolve, reject) => {
-  //     fetch(`${url}/blogs/${title}`, {
-  //       method: "DELETE",
-  //     });
-  //   });
-  // }
+  async function deleteBlog(blog_title) {
+    // return new Promise((resolve, reject) => {
+    //   fetch(`${url}/blogs/${title}`, {
+    //     method: "DELETE",
+    //   });
+    // });
+    console.log('deleteBlog deleting: ', `${username}'s ${blog_title}`);
+    axios({
+      method: "delete",
+      url: `${url}/blogs/${username}`,
+      data: {
+        blog_username: username,
+        title: blog_title,
+      }
+    });
+    // Alternative method:
+    // axios.delete(`${url}/blogs/${username}`,{blog_username: username,title: blog_title,})
+  }
 
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
@@ -257,7 +269,7 @@ export default function Blogs() {
 
   const handleOpen1 = (blog_title) => {
     setOpen1(true);
-    addTitle(blog_title);
+    setTitle(blog_title);
   };
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -276,10 +288,13 @@ export default function Blogs() {
   };
 
   const handleEditSubmit = () => {
-    console.log('submitting for editing: ', `${username}'s ${title} with ${content}`);
-    // console.log('submitting for editing: ', title);
     editBlog(username, title, content);
     setOpen(false);
+    reload();
+  };
+
+  const handleDelete = (blog_title) => {
+    deleteBlog(blog_title);
     reload();
   };
 
@@ -338,7 +353,7 @@ export default function Blogs() {
                         type="title"
                         fullWidth
                         variant="standard"
-                        onChange={(e) => addTitle(e.target.value)}
+                        onChange={(e) => setTitle(e.target.value)}
                       />
                       <TextField
                         autoFocus
@@ -348,7 +363,7 @@ export default function Blogs() {
                         type="Text"
                         fullWidth
                         multiline
-                        onChange={(e) => addContent(e.target.value)}
+                        onChange={(e) => setContent(e.target.value)}
                       />
                     </DialogContent>
                     <DialogActions>
@@ -444,7 +459,7 @@ export default function Blogs() {
                                       fullWidth
                                       multiline
                                       onChange={(e) =>
-                                        addContent(e.target.value)
+                                        setContent(e.target.value)
                                       }
                                     />
                                   </DialogContent>
@@ -462,15 +477,16 @@ export default function Blogs() {
                           </Modal>
                         </Box>
 
-                        {/* <Box>
+                        <Box>
                             <Button
                                 variant="outlined"
                                 color="inherit"
                                 startIcon={<DeleteIcon style={{ color: "gray" }} />}
-                                onClick={deleteBlog(blog.title)}
+                                onClick={() => handleDelete(blog.title)}
                             >
                             </Button>
-                        </Box> */}
+                        </Box>
+
                       </CardActions>
                     </Card>
                   </Grid>

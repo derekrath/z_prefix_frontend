@@ -30,9 +30,8 @@ export default function Login() {
 
   // const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
   const [users, setUsers] = useState('')
-  const [passwordRaw, setPasswordRaw] = useState('');
 
-  const {username, setUsername, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginContext);
+  const {usernameInput, setUsername, passwordRaw, setPasswordRaw, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginContext);
 
   async function createUserAccount(username, passwordRaw) {
     console.log('posting', username, passwordRaw);
@@ -45,10 +44,21 @@ export default function Login() {
       }
     })
     .then(res => {
-      // console.log('response on frontend:', res.data)
-      setMessageText(res.data.message)
-      setShowCreateUserSuccess(true)
-      setShowLoginError(false)
+      console.log('response on frontend:', res.data.message)
+      if(res){
+        // setMessageText('NEW USER CREATED')
+        setMessageText(res.data.message)
+        setShowCreateUserSuccess(true)
+        setShowLoginError(false)
+        setShowLoginSuccess(false)
+      }
+    })
+    .catch(e => {
+      // console.log('error:', e);
+      // setMessageText(e.data.message)
+      setMessageText('USERNAME IS ALREADY IN USE')
+      setShowCreateUserSuccess(false)
+      setShowLoginError(true)
       setShowLoginSuccess(false)
     })
   }
@@ -71,13 +81,14 @@ export default function Login() {
   const submitLogin = (e) => {
     setShowLoginError(false)
     e.preventDefault();
-    // console.log('submited', userInfo);
+    // let password = passwordRaw;
+    let username = usernameInput;
     loginUser(username, passwordRaw);
   };
 
   const submitAccount = (e) => {
     e.preventDefault();
-    createUserAccount(username, passwordRaw);
+    createUserAccount(usernameInput, passwordRaw);
   };
 
   return (
@@ -91,7 +102,7 @@ export default function Login() {
       <br></br>
       <br></br>
       Result from username field:
-      {username}
+      {usernameInput}
       <br></br>
       <br></br>
       Result from password field:
@@ -103,7 +114,7 @@ export default function Login() {
           label="Username"
           placeholder="Username"
           variant="filled"
-          value={username}
+          value={usernameInput}
           onChange={e => setUsername(e.target.value)}
         />
         <TextField

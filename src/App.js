@@ -14,6 +14,9 @@ export const LoginContext = createContext();
 // export const LoginFunctionsContext = createContext();
 export const BlogContext = createContext();
 
+const axios = require('axios');
+
+
 function App() {
 
   // This works:
@@ -31,65 +34,79 @@ function App() {
   nextMonth.setMonth(date.getMonth() + 1);
   
   const [userData, setUserData] = useState('')
-  const [username, setUsername] = useState('')
+  const [usernameInput, setUsername] = useState('')
+  const [passwordRaw, setPasswordRaw] = useState('');
   const [cookies, setCookies, removeCookies] = useCookies(['username-cookie', 'passwordRaw-hash-cookie']);
   const [showLoginError, setShowLoginError] = useState(false);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const [showCreateUserSuccess, setShowCreateUserSuccess] = useState(false);
   const [messageText, setMessageText] = useState('')
 
-  const [content, addContent] = useState('');
-  const [title, addTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
   const [userBlogs, setUserBlogs] = useState([]);
   const [allUserBlogs, setAllUserBlogs] = useState([]);
   
-  const loginContext = {url, cookies, username, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, setUserData, setUsername, loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
+  const loginContext = {url, cookies, usernameInput, passwordRaw, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, setUserData, setUsername, setPasswordRaw, loginUser, setCookies, removeCookies, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText};
 
-  const blogContext = {content, addContent, title, addTitle, userBlogs,  setUserBlogs,  allUserBlogs, setAllUserBlogs}
+  const blogContext = {content, setContent, title, setTitle, userBlogs,  setUserBlogs,  allUserBlogs, setAllUserBlogs}
 
-    //setting cookies 
+  // login with cookies
   useEffect(() => {
-    let user_username = cookies['username-cookie']
-    setUsername(user_username)
-    let passwordHash = cookies['passwordRaw-hash-cookie']
-    if (user_username && passwordHash) {
-      loginUser(user_username, passwordHash)
+    let username = cookies['username-cookie']
+    // setUsername(user_username)
+    // let passwordHash = cookies['passwordRaw-hash-cookie']
+    // if (username && passwordHash) {
+    //   loginUser(username, passwordHash)
+    let passwordHash = cookies['password-hash-cookie']
+    if (username && passwordHash) {
+      let password = passwordHash;
+      loginUser(username, password)
     }
   }, [])
-
-function loginUser(user_username, passwordRaw) {
-  return new Promise((resolve, reject) => {
-    fetch(`${url}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }, body: JSON.stringify({ user_username, passwordRaw })
+  
+  //setting cookies 
+  // function loginUser(username, passwordRaw) {
+  //   return new Promise((resolve, reject) => {
+  //     fetch(`${url}/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       }, body: JSON.stringify({ username, passwordRaw })
+  //     })
+  async function loginUser(username, password) {
+    axios({
+      method: 'post',
+      url: `${url}/login`,
+      data: {
+        username: username,
+        password: password
+      }
     })
-      .then(res => {
-        if(res.ok){
-          setCookies('username-cookie', user_username, {expires: nextMonth})
-          // !!!!!Change to the hash, hide the raw password!!!!
-          setCookies('passwordRaw-hash-cookie', passwordRaw, {expires: nextMonth})
-          setShowLoginError(false)
-          setShowLoginSuccess(true)
-          setShowCreateUserSuccess(false)
-          // !!!!!Change to the hash, hide the raw password!!!!
-          setUserData({user_username: user_username, password: passwordRaw})
-        }
-        else{
-          let status = res.status;
-          console.log('status code: not okay', status)
-          setShowLoginError(true)
-          setShowLoginSuccess(false)
-          setShowCreateUserSuccess(false)
-        }
-        return res.json()
-      })
-      .then(res => {
-        setMessageText(res)
-      })
-      .catch(err => reject(err))
-  })
+    .then(res => {
+      if(res){
+        // console.log('res:', res.data.message);
+        let passwordHash = res.data;
+        setCookies('username-cookie', username, {expires: nextMonth})
+        // !!!!!Change to the hash, hide the raw password!!!!
+        setCookies('password-hash-cookie', passwordHash, {expires: nextMonth})
+        setShowLoginError(false)
+        setShowLoginSuccess(true)
+        setShowCreateUserSuccess(false)
+        // !!!!!Change to the hash, hide the raw password!!!!
+        setUserData({user_username: username, passwordHash: passwordHash})
+        setMessageText('LOGIN SUCCESSFUL')
+      }
+    })
+    .catch(e => {
+        setCookies('username-cookie','', {expires: nextMonth})
+        setCookies('password-hash-cookie','', {expires: nextMonth})
+        setShowLoginError(true)
+        setShowLoginSuccess(false)
+        setShowCreateUserSuccess(false)
+        setMessageText('INVALID USERNAME OR PASSWORD')
+    })
+  // })
 };
 
   return (
@@ -110,7 +127,6 @@ function loginUser(user_username, passwordRaw) {
       </LoginContext.Provider>
     </div>
   );
-
 }
 
 export default App;
