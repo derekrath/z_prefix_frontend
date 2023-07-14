@@ -34,7 +34,6 @@ export default function Login() {
   const {usernameInput, setUsername, passwordRaw, setPasswordRaw, userData, showLoginError, showLoginSuccess, showCreateUserSuccess, messageText, loginUser, setShowLoginError, setShowLoginSuccess, setShowCreateUserSuccess, setMessageText} = useContext(LoginContext);
 
   async function createUserAccount(username, passwordRaw) {
-    console.log('posting', username, passwordRaw);
     axios({
       method: 'post',
       url: `${url}/users`,
@@ -44,7 +43,6 @@ export default function Login() {
       }
     })
     .then(res => {
-      console.log('response on frontend:', res.data.message)
       if(res){
         // setMessageText('NEW USER CREATED')
         setMessageText(res.data.message)

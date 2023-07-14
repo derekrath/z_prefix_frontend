@@ -10,12 +10,17 @@ import NavBar from "./components/NavBar.js";
 import { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
+import dotenv from 'dotenv'; //not needed for React App
+dotenv.config(); //not needed for React App
+
 export const LoginContext = createContext();
 // export const LoginFunctionsContext = createContext();
 export const BlogContext = createContext();
 
 const axios = require('axios');
 
+console.log('REACT_APP_PORT | server located at port:', process.env.REACT_APP_PORT);
+console.log('REACT_APP_NODE_ENV | currently in:', process.env.REACT_APP_NODE_ENV);
 
 function App() {
 
@@ -26,8 +31,12 @@ function App() {
     // const url = "http://localhost:3001";
   // const url = "https://z-prefix-server.herokuapp.com"
   // 
-  const dev = process.env.NODE_ENV !== 'production';
-  const url = dev ? 'http://localhost:8080' : 'https://z-prefix-server.herokuapp.com';
+  // console.log('REACT_APP_DATABASE_URL:', process.env.REACT_APP_DATABASE_URL);
+  // console.log('DB_CONNECTION_STRING', process.env.DB_CONNECTION_STRING);
+
+  const dev = process.env.REACT_APP_NODE_ENV !== 'production';
+  // server url:
+  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
 
   const date = new Date();
   const nextMonth = new Date();

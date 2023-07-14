@@ -117,7 +117,7 @@ export default function Blogs() {
   const {userData} = useContext(LoginContext);
   // const username = 'cooluser';
   let username = userData.user_username;
-  console.log('username: ', username);
+  // console.log('Blogs.js username: ', username);
 
   const {
     content,
@@ -133,11 +133,11 @@ export default function Blogs() {
   // const url = "http://localhost:8080";
   // const url = "https://z-prefix-server.herokuapp.com"
   const dev = process.env.NODE_ENV !== 'production';
+  console.log('dev', dev);
   const url = dev ? 'http://localhost:8080' : 'https://z-prefix-server.herokuapp.com';
   
   useEffect(() => {
       const getBlogs = async () => {
-        console.log('getting blogs for user:', username)
         axios.get(`${url}/blogs/${username}`).then((userBlogs) => {
             setUserBlogs(userBlogs.data);
         });
@@ -177,7 +177,6 @@ export default function Blogs() {
   // }
 
   async function postBlog(username, title, content) {
-    console.log('posting', username);
     axios({
       method: 'post',
       url: `${url}/blogs/${username}`,
@@ -194,7 +193,6 @@ export default function Blogs() {
 
   async function editBlog() {
     // let blog_username = username;
-    console.log('editing: ', `${username}'s ${title} with ${content}`);
     axios({
       method: "put",
       url: `${url}/blogs/${username}`,
@@ -212,7 +210,6 @@ export default function Blogs() {
     //     method: "DELETE",
     //   });
     // });
-    console.log('deleteBlog deleting: ', `${username}'s ${blog_title}`);
     axios({
       method: "delete",
       url: `${url}/blogs/${username}`,
