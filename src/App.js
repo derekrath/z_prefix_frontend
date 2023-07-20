@@ -19,8 +19,8 @@ export const BlogContext = createContext();
 
 const axios = require('axios');
 
-console.log('REACT_APP_PORT | server located at port:', process.env.REACT_APP_PORT);
-console.log('REACT_APP_NODE_ENV | currently in:', process.env.REACT_APP_NODE_ENV);
+// console.log('REACT_APP_PORT | server located at port:', process.env.REACT_APP_PORT);
+// console.log('REACT_APP_NODE_ENV | currently in:', process.env.REACT_APP_NODE_ENV);
 
 function App() {
 
