@@ -61,15 +61,13 @@ export default function Login() {
     })
   }
 
-  useEffect(() => {
-    const getUsers = async () => {
-      axios.get(`${url}/users`)
-      // .then(userList => console.log(userList.data))
-        .then(userList => setUsers(userList.data));
-      // .then(UserList => setResult({ username: UserList.data[0].username, passwordRaw: UserList.data[0].passwordRaw }));
-    }
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   const getUsers = async () => {
+  //     axios.get(`${url}/users`)
+  //       .then(userList => setUsers(userList.data));
+  //   }
+  //   getUsers();
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
