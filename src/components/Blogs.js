@@ -1,7 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import IconButton from "@mui/material/IconButton";
-import ClearIcon from "@mui/icons-material/Clear";
+// import ClearIcon from "@mui/icons-material/Clear";
 // import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -16,7 +16,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+// import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Pagination from '@mui/material/Pagination';
 import { useContext, useEffect, useState } from "react";
 import { LoginContext, BlogContext } from "../App.js";
@@ -111,7 +111,7 @@ export default function Blogs() {
   // const data = useContext(AppContext);
   // console.log('context data',data)
 
-  const [showError, setShowError] = useState(false);
+  const [showError] = useState(false);
   const [messageText, setMessageText] = useState('');
 
   const {userData} = useContext(LoginContext);
@@ -143,7 +143,7 @@ export default function Blogs() {
         });
     };
     getBlogs();
-  }, [username]);
+  }, [username, url, setUserBlogs]);
 
   useEffect(() => {
     const getAllBlogs = async () => {
@@ -153,7 +153,7 @@ export default function Blogs() {
         .then((allUserBlogs) => setAllUserBlogs(allUserBlogs.data));
     };
     getAllBlogs();
-  }, []);
+  }, [url, setAllUserBlogs]);
 
   const classes = useStyles();
 
@@ -296,7 +296,7 @@ export default function Blogs() {
   };
 
   const handleClickOpen = () => setOpen(true);
-  const handleClickOpen1 = () => setOpen1(true);
+  // const handleClickOpen1 = () => setOpen1(true);
 
   return (
     <div className="Blogs">

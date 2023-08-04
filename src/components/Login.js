@@ -67,7 +67,7 @@ export default function Login() {
         .then(userList => setUsers(userList.data));
     }
     getUsers();
-  }, []);
+  }, [url]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
