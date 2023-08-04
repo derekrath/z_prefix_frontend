@@ -42,7 +42,7 @@ function App() {
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
   // for DigitalOcean:
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
-  url = 'https://z-prefix-server.herokuapp.com';
+  const url = 'https://z-prefix-server.herokuapp.com';
 
   const [userData, setUserData] = useState('')
   const [usernameInput, setUsername] = useState('')
