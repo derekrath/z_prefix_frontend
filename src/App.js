@@ -37,8 +37,8 @@ function App() {
   // console.log('DB_CONNECTION_STRING', process.env.DB_CONNECTION_STRING);
 
   // server url:
-  const dev = process.env.REACT_APP_NODE_ENV !== 'production';
-  console.log('HEROKU ENVIRONEMENT REACT_APP_NODE_ENV:', dev);
+  const dev = process.env.REACT_APP_NODE_ENV !== 'production'; // true or false
+  console.log('HEROKU ENVIRONEMENT REACT_APP_NODE_ENV:', process.env.REACT_APP_NODE_ENV);
   console.log('HEROKU ENVIRONEMENT NODE_ENV:', process.env.NODE_ENV);
   // for Heroku:
   const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
