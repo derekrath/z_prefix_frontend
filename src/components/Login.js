@@ -61,13 +61,13 @@ export default function Login() {
     })
   }
 
-  // useEffect(() => {
-  //   const getUsers = async () => {
-  //     axios.get(`${url}/users`)
-  //       .then(userList => setUsers(userList.data));
-  //   }
-  //   getUsers();
-  // }, []);
+  useEffect(() => {
+    const getUsers = async () => {
+      axios.get(`${url}/users`)
+        .then(userList => setUsers(userList.data));
+    }
+    getUsers();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
