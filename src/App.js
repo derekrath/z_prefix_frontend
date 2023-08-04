@@ -41,11 +41,11 @@ function App() {
   console.log('HEROKU ENVIRONEMENT REACT_APP_NODE_ENV:', process.env.REACT_APP_NODE_ENV);
   console.log('HEROKU ENVIRONEMENT NODE_ENV:', process.env.NODE_ENV);
   // for Heroku:
-  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
+  // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
   console.log('HEROKU PORT:', process.env.PORT)
   console.log('HEROKU REACT_APP_PORT:', process.env.REACT_APP_PORT)
   console.log('HEROKU SERVER URL:', url);
-  // const url = 'https://z-prefix-server.herokuapp.com';
+  const url = 'https://z-prefix-server.herokuapp.com';
   // for DigitalOcean:
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
 
