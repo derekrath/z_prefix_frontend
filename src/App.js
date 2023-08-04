@@ -28,13 +28,8 @@ function App() {
 
   // server url:
   const dev = process.env.NODE_ENV !== 'production'; // true or false
-  console.log('HEROKU ENVIRONEMENT REACT_APP_NODE_ENV:', process.env.REACT_APP_NODE_ENV);
-  console.log('HEROKU ENVIRONEMENT NODE_ENV:', process.env.NODE_ENV);
   // for Heroku:
   const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
-  console.log('HEROKU PORT:', process.env.PORT)
-  console.log('HEROKU REACT_APP_PORT:', process.env.REACT_APP_PORT)
-  console.log('HEROKU SERVER URL:', url);
   // for DigitalOcean:
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
 
