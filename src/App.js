@@ -37,12 +37,13 @@ function App() {
   // console.log('DB_CONNECTION_STRING', process.env.DB_CONNECTION_STRING);
 
   // server url:
-  // const dev = process.env.REACT_APP_NODE_ENV !== 'production';
+  const dev = process.env.REACT_APP_NODE_ENV !== 'production';
   // for Heroku:
-  // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
+  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
+  console.log('server url:', url);
+  // const url = 'https://z-prefix-server.herokuapp.com';
   // for DigitalOcean:
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
-  const url = 'https://z-prefix-server.herokuapp.com';
 
   const [userData, setUserData] = useState('')
   const [usernameInput, setUsername] = useState('')
