@@ -53,8 +53,5 @@
   "description": "Z-prefix assessment, allows user to login then create and manage blogs.",
   "main": "index.js",
   "author": "Derek Rath",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  }
+  "license": "ISC"
 }
