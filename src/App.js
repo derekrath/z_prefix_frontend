@@ -37,8 +37,8 @@ function App() {
 
   const dev = process.env.REACT_APP_NODE_ENV !== 'production';
   // server url:
-  // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
-  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
+  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
+  // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
 
   const date = new Date();
   const nextMonth = new Date();
