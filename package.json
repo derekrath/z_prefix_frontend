@@ -1,6 +1,7 @@
 {
   "name": "ui",
   "version": "0.1.0",
+  "homepage": "https://z-prefix-ui.herokuapp.com/",
   "engines": {
     "node": "latest"
   },
