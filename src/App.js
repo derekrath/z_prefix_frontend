@@ -26,26 +26,15 @@ const axios = require('axios');
 
 function App() {
 
-  // This works:
-  // const url = 'http://localhost:8080'
-
-  // This also seems to work:
-    // const url = "http://localhost:3001";
-  // const url = "https://z-prefix-server.herokuapp.com"
-  // 
-  // console.log('REACT_APP_DATABASE_URL:', process.env.REACT_APP_DATABASE_URL);
-  // console.log('DB_CONNECTION_STRING', process.env.DB_CONNECTION_STRING);
-
   // server url:
-  const dev = process.env.REACT_APP_NODE_ENV !== 'production'; // true or false
+  const dev = process.env.NODE_ENV !== 'production'; // true or false
   console.log('HEROKU ENVIRONEMENT REACT_APP_NODE_ENV:', process.env.REACT_APP_NODE_ENV);
   console.log('HEROKU ENVIRONEMENT NODE_ENV:', process.env.NODE_ENV);
   // for Heroku:
-  // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
+  const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-server.herokuapp.com';
   console.log('HEROKU PORT:', process.env.PORT)
   console.log('HEROKU REACT_APP_PORT:', process.env.REACT_APP_PORT)
   console.log('HEROKU SERVER URL:', url);
-  const url = 'https://z-prefix-server.herokuapp.com';
   // for DigitalOcean:
   // const url = dev ? `http://localhost:${process.env.REACT_APP_PORT}` : 'https://z-prefix-ui.web.app';
 
